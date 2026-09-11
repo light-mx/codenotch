@@ -1,0 +1,399 @@
+/* ==========================================================================
+   Codenotch — Main Notch Stylesheet
+   Layout, structure, and component styles for the notch overlay.
+   All measurements derived from Design.swift scale (44/117 ≈ 0.376).
+   ========================================================================== */
+
+/* ---- Reset & Container ---- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background: transparent;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+/* ---- Notch Root ---- */
+
+.notch-root {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    pointer-events: none;
+}
+
+.notch-root > * {
+    pointer-events: auto;
+}
+
+/* ---- Notch Body ---- */
+
+.notch-body {
+    position: relative;
+    background: var(--notch);
+    overflow: visible;
+}
+
+.notch-body svg.notch-shape {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: var(--notch);
+}
+
+/* ---- Provider Cells ---- */
+
+.cell-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.cell-stack.horizontal {
+    flex-direction: row;
+}
+
+.provider-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 0;
+    cursor: pointer;
+    transition: opacity var(--duration-contents) var(--ease-contents);
+}
+
+.provider-cell:hover {
+    opacity: 0.9;
+}
+
+.provider-cell .percent-label {
+    font: var(--font-percent);
+    color: var(--text-primary);
+    text-align: center;
+    margin-top: 2px;
+    transition: all 200ms ease;
+}
+
+.provider-cell .percent-label.stale {
+    color: var(--text-secondary);
+}
+
+/* ---- Provider Ring (SVG) ---- */
+
+.ring-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ring-svg {
+    transform: rotate(-90deg);
+}
+
+.ring-track {
+    fill: none;
+    stroke: var(--ring-track);
+    stroke-linecap: round;
+}
+
+.ring-arc {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset var(--duration-reading) var(--ease-reading);
+}
+
+.ring-arc.ample    { stroke: var(--ample); }
+.ring-arc.watch    { stroke: var(--watch); }
+.ring-arc.critical { stroke: var(--critical); }
+
+.ring-glyph {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ring-glyph svg {
+    fill: var(--text-primary);
+    fill-rule: evenodd;
+}
+
+.ring-glyph.stale svg {
+    opacity: 0.4;
+}
+
+.ring-glyph.blocked svg {
+    opacity: 0.3;
+}
+
+/* ---- Activity Arc (inner ring) ---- */
+
+.activity-arc {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-arc .spinner {
+    fill: none;
+    stroke: var(--text-primary);
+    stroke-linecap: round;
+    stroke-dasharray: 25 75;
+    animation: spin-arc 1.1s linear infinite;
+    transform-origin: center;
+}
+
+.activity-arc .pulse {
+    fill: none;
+    stroke: var(--waiting-amber);
+    stroke-linecap: round;
+    animation: pulse-ring 0.9s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.ring-container.refreshing .ring-glyph svg {
+    animation: refresh-spin 0.6s var(--ease-contents) 1;
+}
+
+/* ---- Tooltip Card ---- */
+
+.tooltip-container {
+    position: absolute;
+    z-index: 100;
+    pointer-events: auto;
+    transition: transform var(--duration-glide) var(--ease-glide),
+                opacity var(--duration-crossfade) var(--ease-crossfade);
+}
+
+.tooltip-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+
+.tooltip-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    min-width: 220px;
+    max-width: 340px;
+    box-shadow: 0 8px 32px var(--card-shadow);
+    border: 1px solid var(--card-border);
+}
+
+.tooltip-tail {
+    position: absolute;
+    fill: var(--card);
+}
+
+/* Tooltip Header */
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.tooltip-header .glyph {
+    width: 16px;
+    height: 16px;
+}
+
+.tooltip-header .title {
+    font: var(--font-card-title);
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.tooltip-header .age {
+    font: var(--font-card-body);
+    color: var(--text-secondary);
+}
+
+/* Limit Window Row */
+.limit-row {
+    margin-bottom: 8px;
+}
+
+.limit-row:last-child {
+    margin-bottom: 0;
+}
+
+.limit-row .split-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font: var(--font-card-body);
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.limit-row .reset-copy {
+    color: var(--text-secondary);
+}
+
+.limit-row .bar-track {
+    width: 100%;
+    height: 4px;
+    background: var(--bar-track);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 3px;
+}
+
+.limit-row .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width var(--duration-reading) var(--ease-reading);
+}
+
+.limit-row .bar-fill.ample    { background: var(--ample); }
+.limit-row .bar-fill.watch    { background: var(--watch); }
+.limit-row .bar-fill.critical { background: var(--critical); }
+
+.limit-row .summary {
+    font: var(--font-card-body);
+    color: var(--text-secondary);
+}
+
+/* Blocked Row */
+.blocked-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    font: var(--font-card-body);
+    color: var(--critical);
+}
+
+.blocked-row .pause-icon {
+    width: 12px;
+    height: 12px;
+    fill: var(--critical);
+}
+
+/* Session List */
+.session-list {
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 8px;
+}
+
+.session-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+}
+
+.session-row .status-ring {
+    flex-shrink: 0;
+}
+
+.session-row .session-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.session-row .session-name {
+    font: var(--font-card-body);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.session-row .session-detail {
+    font: var(--font-card-caption);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.session-row .session-elapsed {
+    font: var(--font-card-caption);
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+}
+
+/* Status message (no data) */
+.status-message {
+    font: var(--font-card-body);
+    color: var(--text-secondary);
+    padding: 4px 0;
+}
+
+/* ---- Settings Orb ---- */
+
+.settings-orb {
+    position: relative;
+    cursor: pointer;
+}
+
+.settings-orb .arc {
+    fill: none;
+    stroke: var(--notch);
+    stroke-linecap: round;
+    transition: opacity 300ms var(--ease-contents),
+                transform 300ms var(--ease-contents);
+}
+
+.settings-orb .filled-circle {
+    fill: var(--notch);
+    transition: opacity 300ms var(--ease-contents),
+                transform 300ms var(--ease-contents);
+}
+
+.settings-orb .gear-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: opacity 300ms var(--ease-contents),
+                transform 300ms var(--ease-contents);
+}
+
+.settings-orb:not(:hover) .arc {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.settings-orb:not(:hover) .filled-circle {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+.settings-orb:not(:hover) .gear-icon {
+    opacity: 0;
+    transform: scale(0.5) rotate(-60deg);
+}
+
+.settings-orb:hover .arc {
+    opacity: 0;
+    transform: scale(0.86);
+}
+
+.settings-orb:hover .filled-circle {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.settings-orb:hover .gear-icon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}

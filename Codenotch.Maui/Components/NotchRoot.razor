@@ -1,0 +1,75 @@
+@using Codenotch.Models
+@using Codenotch.Services
+
+<div class="notch-root">
+    <div class="notch-body" style="clip-path: url(#notch-clip);">
+        <!-- SVG for clipping shape could go here or in CSS -->
+        <svg width="0" height="0">
+            <defs>
+                <clipPath id="notch-clip">
+                    <path d="M0 0 L100 0 L100 100 L0 100 Z" />
+                </clipPath>
+            </defs>
+        </svg>
+        
+        <div class="cell-stack @(ViewModel.Edge.IsVertical() ? "" : "horizontal")">
+            @if (ViewModel.Snapshots != null)
+            {
+                int index = 0;
+                foreach (var snapshot in ViewModel.Snapshots)
+                {
+                    <ProviderCell Snapshot="snapshot" 
+                                  Index="index++" 
+                                  IsVertical="ViewModel.Edge.IsVertical()"
+                                  OnCellHover="HandleHover" 
+                                  OnCellLeave="HandleLeave" />
+                }
+            }
+        </div>
+        
+        <SettingsOrb IsHovered="isSettingsHovered" Edge="ViewModel.Edge" OnClick="OpenSettings" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(hoveredProviderId) && hoveredSnapshot != null)
+    {
+        <TooltipCard Snapshot="hoveredSnapshot" 
+                     Sessions="GetSessionsForProvider(hoveredProviderId)" 
+                     Edge="ViewModel.Edge" 
+                     Now="DateTime.UtcNow" />
+    }
+</div>
+
+@code {
+    [Inject] public NotchViewModel ViewModel { get; set; } = default!;
+
+    private string? hoveredProviderId;
+    private ProviderSnapshot? hoveredSnapshot => ViewModel.Snapshots?.FirstOrDefault(s => s.Id == hoveredProviderId);
+    private bool isSettingsHovered = false;
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += (s, e) => InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleHover(string providerId)
+    {
+        hoveredProviderId = providerId;
+        StateHasChanged();
+    }
+
+    private void HandleLeave()
+    {
+        hoveredProviderId = null;
+        StateHasChanged();
+    }
+
+    private void OpenSettings()
+    {
+        // Settings logic
+    }
+
+    private List<AgentSession> GetSessionsForProvider(string providerId)
+    {
+        return ViewModel.Sessions.TryGetValue(providerId, out var list) ? list : new List<AgentSession>();
+    }
+}

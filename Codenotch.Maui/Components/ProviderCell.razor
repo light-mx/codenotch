@@ -1,0 +1,42 @@
+@using Codenotch.Models
+
+<div class="provider-cell @(IsVertical ? "vertical" : "horizontal")" 
+     style="transition-delay: @(Index * 50)ms;"
+     @onmouseenter="HandleMouseEnter"
+     @onmouseleave="HandleMouseLeave">
+    
+    <ProviderRing UsedFraction="Snapshot.UsedFraction" 
+                  Glyph="Snapshot.Glyph" 
+                  IsStale="Snapshot.IsStale" 
+                  IsBlocked="Snapshot.IsBlocked" 
+                  IsRefreshing="Snapshot.IsRefreshing" 
+                  Activity="ActivitySummary.ActivityState.None" />
+                  
+    <div class="percent-label @(Snapshot.IsStale ? "stale" : "")">
+        @(Snapshot.UsedFraction.HasValue ? $"{Snapshot.UsedFraction.Value * 100:0}%" : "--")
+    </div>
+</div>
+
+@code {
+    [Parameter] public ProviderSnapshot Snapshot { get; set; } = default!;
+    [Parameter] public int Index { get; set; }
+    [Parameter] public bool IsVertical { get; set; } = true;
+    [Parameter] public EventCallback<string> OnCellHover { get; set; }
+    [Parameter] public EventCallback OnCellLeave { get; set; }
+
+    private async Task HandleMouseEnter()
+    {
+        if (OnCellHover.HasDelegate && Snapshot != null)
+        {
+            await OnCellHover.InvokeAsync(Snapshot.Id);
+        }
+    }
+
+    private async Task HandleMouseLeave()
+    {
+        if (OnCellLeave.HasDelegate)
+        {
+            await OnCellLeave.InvokeAsync();
+        }
+    }
+}

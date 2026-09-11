@@ -1,0 +1,18 @@
+@namespace Codenotch.Components.Shared
+@using Codenotch.Models
+
+<div class="limit-row">
+    <div class="split-row">
+        <span class="window-label">@(WindowItem != null ? WindowItem.Label : "")</span>
+        @if (WindowItem?.ResetsAt.HasValue == true)
+        {
+            <span class="reset-copy">@ResetCopy.Format(WindowItem.ResetsAt.Value, Now)</span>
+        }
+    </div>
+    <div class="bar-track">
+        <div class="bar-fill @BandClass" style="@($"width: {UsedFraction * 100}%;")"></div>
+    </div>
+    <div class="summary">
+        @(WindowItem != null ? WindowItem.Summary : "")
+    </div>
+</div>

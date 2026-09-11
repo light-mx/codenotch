@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Codenotch — Design Palette
+   Converted from Sources/DesignSystem/Palette.swift
+   ========================================================================== */
+
+:root {
+    /* Notch body and card background */
+    --notch: #000000;
+    --card: #000000;
+
+    /* Ring/bar tracks */
+    --ring-track: #303030;
+    --bar-track: #2D2D2D;
+
+    /* Usage band colours — from the Figma frame, not the spec prose */
+    --ample: #00FF88;       /* 0–49%: plenty of room */
+    --watch: #F2FF00;       /* 50–69%: getting close */
+    --critical: #FF3F00;    /* 70–100%: nearly out / exhausted */
+
+    /* Text */
+    --text-primary: #FFFFFF;
+    --text-secondary: #808080;
+    --text-tertiary: #505050;
+
+    /* Derived — tooltip card border, subtle */
+    --card-border: rgba(255, 255, 255, 0.06);
+    --card-shadow: rgba(0, 0, 0, 0.5);
+
+    /* Blocked/waiting state */
+    --waiting-amber: #F5A623;
+}

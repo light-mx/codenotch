@@ -1,0 +1,28 @@
+@using Codenotch.Models
+
+<div class="session-row">
+    <svg class="status-ring @StatusClass" width="8" height="8" viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="3" fill="currentColor" />
+    </svg>
+    <div class="session-info">
+        <div class="session-name">@Session.Name</div>
+        <div class="session-detail">@Session.Detail</div>
+    </div>
+    <div class="session-elapsed">
+        @ElapsedTime
+    </div>
+</div>
+
+@code {
+    [Parameter] public AgentSession Session { get; set; } = default!;
+    [Parameter] public DateTime Now { get; set; }
+
+    private string StatusClass => Session.State switch
+    {
+        AgentSession.SessionState.Busy => "working",
+        AgentSession.SessionState.Waiting => "waiting",
+        _ => "idle"
+    };
+
+    private string ElapsedTime => ElapsedCopy.Format(Now - Session.Since);
+}

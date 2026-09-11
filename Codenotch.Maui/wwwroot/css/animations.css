@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Codenotch — Animations
+   Converted from Sources/Notch/NotchMotion.swift
+
+   SwiftUI spring(response: R, dampingFraction: ζ) maps to a damped
+   oscillator with ωn = 2π/R, ζ as given. The closest CSS approximation
+   uses cubic-bezier() curves calibrated to match the overshoot and settle
+   time of each spring.
+   ========================================================================== */
+
+:root {
+    /* unfold: spring(response: 0.42, dampingFraction: 0.78) — soft settle, no bounce */
+    --ease-unfold: cubic-bezier(0.32, 0.00, 0.14, 1.00);
+    --duration-unfold: 420ms;
+
+    /* contents: spring(response: 0.36, dampingFraction: 0.82) */
+    --ease-contents: cubic-bezier(0.25, 0.00, 0.12, 1.00);
+    --duration-contents: 360ms;
+
+    /* glide: spring(response: 0.5, dampingFraction: 0.86) — tooltip travel */
+    --ease-glide: cubic-bezier(0.22, 0.00, 0.10, 1.00);
+    --duration-glide: 500ms;
+
+    /* crossfade: easeInOut(duration: 0.16) */
+    --ease-crossfade: cubic-bezier(0.42, 0.00, 0.58, 1.00);
+    --duration-crossfade: 160ms;
+
+    /* reading: spring(response: 0.9, dampingFraction: 0.9) — arc sweep */
+    --ease-reading: cubic-bezier(0.20, 0.00, 0.08, 1.00);
+    --duration-reading: 900ms;
+
+    /* merge: easeIn(duration: 0.2) — orb being absorbed */
+    --ease-merge: cubic-bezier(0.42, 0.00, 1.00, 1.00);
+    --duration-merge: 200ms;
+
+    /* Stagger delay per cell */
+    --stagger-step: 45ms;
+    --stagger-max: 180ms;
+}
+
+/* ---- Reusable animation classes ---- */
+
+.anim-unfold {
+    transition: all var(--duration-unfold) var(--ease-unfold);
+}
+
+.anim-contents {
+    transition: all var(--duration-contents) var(--ease-contents);
+}
+
+.anim-glide {
+    transition: all var(--duration-glide) var(--ease-glide);
+}
+
+.anim-crossfade {
+    transition: opacity var(--duration-crossfade) var(--ease-crossfade),
+                transform var(--duration-crossfade) var(--ease-crossfade);
+}
+
+.anim-reading {
+    transition: stroke-dashoffset var(--duration-reading) var(--ease-reading);
+}
+
+.anim-merge {
+    transition: all var(--duration-merge) var(--ease-merge);
+}
+
+/* ---- Keyframe animations ---- */
+
+/* Activity spinner — single quarter-arc rotating continuously */
+@keyframes spin-arc {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Waiting pulse — amber ring breathing */
+@keyframes pulse-ring {
+    0%   { opacity: 0.25; }
+    50%  { opacity: 1.0; }
+    100% { opacity: 0.25; }
+}
+
+/* Refresh spin — single 360° turn on demand */
+@keyframes refresh-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Numeric text change — brief pop */
+@keyframes text-pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ---- Reduced motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+    .anim-unfold,
+    .anim-contents,
+    .anim-glide,
+    .anim-crossfade,
+    .anim-reading,
+    .anim-merge {
+        transition: none !important;
+    }
+
+    .spinner,
+    .pulse {
+        animation: none !important;
+    }
+}

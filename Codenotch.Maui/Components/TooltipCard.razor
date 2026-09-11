@@ -1,0 +1,59 @@
+@using Codenotch.Models
+@using Codenotch.Components.Shared
+
+<div class="tooltip-container @Edge.ToString().ToLower()">
+    <svg class="tooltip-tail" width="12" height="8" viewBox="0 0 12 8">
+        <polygon points="6,0 12,8 0,8" fill="var(--card, #000000)" />
+    </svg>
+    <div class="tooltip-card">
+        <div class="tooltip-header">
+            <span class="title">@Snapshot.DisplayName Usage</span>
+            @if (Snapshot.IsStale)
+            {
+                <span class="age">Stale</span>
+            }
+        </div>
+
+        @if (Snapshot.Windows.Any())
+        {
+            <div class="windows-container">
+                @foreach (var window in Snapshot.Windows)
+                {
+                    <LimitWindowRow WindowItem="window" Now="Now" />
+                }
+            </div>
+        }
+
+        @if (Snapshot.IsBlocked)
+        {
+            <div class="blocked-row">
+                <span class="pause-icon">⏸</span>
+                <span class="block-summary">@(Snapshot.Block?.Reason ?? "Usage limit reached")</span>
+            </div>
+        }
+
+        @if (Sessions != null && Sessions.Any())
+        {
+            <div class="session-list">
+                @foreach (var session in Sessions)
+                {
+                    <SessionRow Session="session" Now="Now" />
+                }
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Snapshot.StatusMessage))
+        {
+            <div class="status-message">
+                @Snapshot.StatusMessage
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public ProviderSnapshot Snapshot { get; set; } = default!;
+    [Parameter] public List<AgentSession>? Sessions { get; set; }
+    [Parameter] public NotchEdge Edge { get; set; }
+    [Parameter] public DateTime Now { get; set; }
+}

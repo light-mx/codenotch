@@ -1,0 +1,21 @@
+/* ==========================================================================
+   Codenotch — Typography
+   Converted from Sources/DesignSystem/Typography.swift
+
+   Swift's Design.fontSize(capPixels:) divides by SF Pro's cap-height ratio
+   (0.714) to get the full point size. CSS font-size IS the full size, so
+   we apply the conversion: pt = capPixels * Design.scale / 0.714
+   With scale = 44.0/117.0 ≈ 0.376:
+     percent:   27 * 0.376 / 0.714 ≈ 14.22pt
+     cardTitle: 26 * 0.376 / 0.714 ≈ 13.69pt
+     cardBody:  18 * 0.376 / 0.714 ≈  9.48pt
+   ========================================================================== */
+
+:root {
+    --font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+
+    --font-percent: 600 14.2px var(--font-family);
+    --font-card-title: 600 13.7px var(--font-family);
+    --font-card-body: 400 9.5px var(--font-family);
+    --font-card-caption: 400 8.5px var(--font-family);
+}

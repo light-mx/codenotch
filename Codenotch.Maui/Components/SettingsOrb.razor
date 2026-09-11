@@ -1,0 +1,20 @@
+<div class="settings-orb @(IsHovered ? "hovered" : "")" @onclick="OnClick">
+    <!-- Arc -->
+    <svg class="orb-arc" viewBox="0 0 30 30" width="30" height="30">
+        <path d="M15,0 A15,15 0 0,1 30,15" stroke="var(--notch-color, white)" stroke-width="2.5" fill="none" />
+    </svg>
+    
+    <!-- Filled circle and gear -->
+    <div class="orb-fill">
+        <svg viewBox="0 0 28 28" width="28" height="28">
+            <circle cx="14" cy="14" r="14" fill="var(--notch-color, white)" />
+        </svg>
+        <div class="gear-icon">⚙</div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool IsHovered { get; set; }
+    [Parameter] public NotchEdge Edge { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+}

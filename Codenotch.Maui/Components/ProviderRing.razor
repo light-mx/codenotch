@@ -1,0 +1,70 @@
+<div class="provider-ring-container @(IsRefreshing ? "refreshing" : "")" style="width: @(Diameter)px; height: @(Diameter)px;">
+    <svg viewBox="0 0 100 100" class="provider-ring-svg">
+        <!-- Track circle -->
+        <circle cx="50" cy="50" r="42" stroke-width="6" stroke="#303030" fill="none" />
+        
+        <!-- Usage arc circle -->
+        <circle cx="50" cy="50" r="42" stroke-width="6" fill="none"
+                stroke-dasharray="@Circumference"
+                stroke-dashoffset="@CurrentOffset"
+                class="usage-arc @UsageClass @(IsBlocked ? "blocked" : "")" />
+                
+        <!-- Inner activity circle -->
+        @if (Activity == ActivitySummary.ActivityState.Working || Activity == ActivitySummary.ActivityState.Waiting)
+        {
+            <circle cx="50" cy="50" r="32" stroke-width="2.5" fill="none"
+                    class="activity-circle @ActivityClass" />
+        }
+    </svg>
+    
+    <div class="provider-glyph @(IsStale ? "stale" : "") @(IsBlocked ? "blocked-glyph" : "")">
+        <!-- Placeholder for ProviderGlyph rendering -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <!-- Simplified generic fallback for now, in a real app this would switch on Glyph -->
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+        </svg>
+    </div>
+</div>
+
+@code {
+    [Parameter] public double? UsedFraction { get; set; }
+    [Parameter] public ProviderGlyph Glyph { get; set; }
+    [Parameter] public bool IsStale { get; set; }
+    [Parameter] public bool IsBlocked { get; set; }
+    [Parameter] public bool IsRefreshing { get; set; }
+    [Parameter] public ActivitySummary.ActivityState Activity { get; set; } = ActivitySummary.ActivityState.None;
+    [Parameter] public double Diameter { get; set; } = 44;
+
+    private const double Radius = 42;
+    private double Circumference => 2 * Math.PI * Radius;
+    
+    private double CurrentOffset 
+    {
+        get
+        {
+            if (IsBlocked) return 0;
+            var frac = UsedFraction ?? 0;
+            frac = Math.Clamp(frac, 0, 1);
+            return Circumference * (1 - frac);
+        }
+    }
+
+    private string UsageClass
+    {
+        get
+        {
+            if (IsBlocked) return "critical";
+            var frac = UsedFraction ?? 0;
+            if (frac < 0.50) return "ample";
+            if (frac < 0.70) return "watch";
+            return "critical";
+        }
+    }
+
+    private string ActivityClass => Activity switch
+    {
+        ActivitySummary.ActivityState.Working => "spinner",
+        ActivitySummary.ActivityState.Waiting => "pulse",
+        _ => ""
+    };
+}

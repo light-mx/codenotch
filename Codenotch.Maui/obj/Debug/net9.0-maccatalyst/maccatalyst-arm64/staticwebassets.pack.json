@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/css/animations.css",
+      "PackagePath": "staticwebassets/css/animations.css"
+    },
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/css/notch.css",
+      "PackagePath": "staticwebassets/css/notch.css"
+    },
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/css/palette.css",
+      "PackagePath": "staticwebassets/css/palette.css"
+    },
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/css/typography.css",
+      "PackagePath": "staticwebassets/css/typography.css"
+    },
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/Users/ajaykontham/.gemini/antigravity/worktrees/codenotch/convert_macos_to_maui/Codenotch.Maui/wwwroot/js/notch-interop.js",
+      "PackagePath": "staticwebassets/js/notch-interop.js"
+    },
+    {
+      "Id": "obj/Debug/net9.0-maccatalyst/maccatalyst-arm64/staticwebassets/msbuild.Codenotch.Maui.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0-maccatalyst/maccatalyst-arm64/staticwebassets/msbuild.Codenotch.Maui.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0-maccatalyst/maccatalyst-arm64/staticwebassets/msbuild.build.Codenotch.Maui.props",
+      "PackagePath": "build\\Codenotch.Maui.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0-maccatalyst/maccatalyst-arm64/staticwebassets/msbuild.buildMultiTargeting.Codenotch.Maui.props",
+      "PackagePath": "buildMultiTargeting\\Codenotch.Maui.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0-maccatalyst/maccatalyst-arm64/staticwebassets/msbuild.buildTransitive.Codenotch.Maui.props",
+      "PackagePath": "buildTransitive\\Codenotch.Maui.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
