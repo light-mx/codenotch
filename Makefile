@@ -23,28 +23,26 @@ ifeq (,$(shell security find-identity -v -p codesigning 2>/dev/null | grep -c "D
 DEV_SIGN := CODE_SIGN_IDENTITY="-" DEVELOPMENT_TEAM="" CODE_SIGN_STYLE=Automatic
 endif
 
-.PHONY: gen build test run clean
+.PHONY: gen build test run clean electron-dev electron-build electron-run skill-analyze skill-verify
 
-gen:
-	xcodegen generate
+# --- Electron Targets --------------------------------------------------------
+electron-dev:
+	npm run dev
 
-build: gen
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug $(DEV_SIGN) build
+electron-build:
+	npm run build
 
-test: gen
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug $(DEV_SIGN) test
+electron-run: electron-build
+	npm start
 
-run: build
-	@APP=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug -showBuildSettings 2>/dev/null \
-		| awk -F' = ' '/ BUILT_PRODUCTS_DIR/ {print $$2; exit}')/Codenotch.app; \
-	pkill -x Codenotch || true; \
-	open "$$APP"
+skill-analyze:
+	node swift-to-elecrtron/scripts/analyze-swift-project.js Sources
+
+skill-verify:
+	npm run verify-parity
 
 clean:
-	rm -rf build DerivedData $(PROJECT)
+	rm -rf build DerivedData $(PROJECT) dist dist-electron
 
 # --- Release -----------------------------------------------------------------
 # The path to a notarized .dmg. Run `make release` for the whole thing, or the

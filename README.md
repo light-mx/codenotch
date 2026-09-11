@@ -64,6 +64,20 @@ built and signed by the maintainer.
 
 ## Building
 
+### Electron + React Version
+
+```sh
+npm install             # install dependencies
+npm run dev             # run development server with live reload
+npm run build           # build production bundles (TypeScript + Vite + Electron)
+npm run verify-parity   # run automated parity test suite
+npm start               # launch production Electron build
+```
+
+Run with `CODENOTCH_DEMO=1 npm start` to preview with mock data matching the Figma frame.
+
+### Swift Native macOS Version
+
 ```sh
 brew install xcodegen   # once
 make run                # generate, build, launch a Debug build
@@ -77,6 +91,14 @@ the maintainer to cut an official release. See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Run with `CODENOTCH_DEMO=1` to see fixed sample data instead of live readings.
+
+## Swift to Electron Reusable Skill
+
+A custom skill is available in [`swift-to-elecrtron/`](swift-to-elecrtron/):
+- `node swift-to-elecrtron/scripts/analyze-swift-project.js Sources` — Static analysis & migration blueprint.
+- `node swift-to-elecrtron/scripts/convert-xcassets-to-web.js Sources/Assets.xcassets Sources/Providers/GlyphOutline.swift` — Asset & vector glyph pipeline.
+- `node swift-to-elecrtron/scripts/verify-parity.js` — Mathematical and layout parity test suite.
+- Comprehensive reference guides for AppKit-to-Electron, SwiftUI-to-React, and notch geometry in `swift-to-elecrtron/references/`.
 
 ## Architecture
 
