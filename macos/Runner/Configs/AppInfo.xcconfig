@@ -1,0 +1,4 @@
+// Application-level settings for the Runner target.
+PRODUCT_NAME = Codenotch
+PRODUCT_BUNDLE_IDENTIFIER = com.codenotch.codenotch
+PRODUCT_COPYRIGHT = Copyright © 2026 Codenotch. All rights reserved.
