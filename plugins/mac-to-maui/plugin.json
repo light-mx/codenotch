@@ -1,0 +1,4 @@
+{
+  "name": "mac-to-maui",
+  "description": "Migration toolkit and agent for converting native macOS Swift/AppKit/SwiftUI apps to .NET MAUI Blazor Hybrid"
+}

@@ -1,0 +1,4 @@
+{
+  "name": "mac-to-flutter",
+  "description": "Migration toolkit and agent for converting native macOS Swift/AppKit/SwiftUI apps to Flutter"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "sample-side-notch",
+  "version": "1.0.0",
+  "description": "Minimal reference example of a macOS screen-edge notch in Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0"
+  }
+}
